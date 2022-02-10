@@ -2,6 +2,9 @@ const canvas = document.getElementById("jsCanvas");
 canvas.width = document.getElementsByClassName("canvas")[0].offsetWidth;
 canvas.height = document.getElementsByClassName("canvas")[0].offsetHeight;
 
+const fillbtn = document.getElementById("paintMode");
+
+
 console.dir(canvas);
 const ctx = canvas.getContext('2d');
 const colorRange = document.getElementById("colorRange");
@@ -42,7 +45,10 @@ function onChangeLineWidth(event){
     ctx.lineWidth = colorRange.value;
 }
 
-
+function onFillCanvas(){
+    ctx.rect(0, 0, 500, 500);
+    ctx.fill();
+}
 
 if(canvas){
     canvas.addEventListener("mousemove",onMouseMove);
@@ -50,4 +56,5 @@ if(canvas){
     canvas.addEventListener("mouseup",stopPainting);
     canvas.addEventListener("mouseleave",stopPainting);
     colorRange.addEventListener("change",onChangeLineWidth);
+    fillbtn.addEventListener("click",onFillCanvas);
 }
