@@ -4,6 +4,8 @@ canvas.height = document.getElementsByClassName("canvas")[0].offsetHeight;
 
 const fillbtn = document.getElementById("paintMode");
 const jsPaintHtmls = document.getElementsByClassName("controls-jsPaintControls__color");
+const jsSaveBtn = document.getElementById("save");
+
 //htmlcollection -> array
 const jsPaints = Array.prototype.filter.call(jsPaintHtmls, function(collection) {
     return collection.nodeName === 'DIV';
@@ -23,6 +25,12 @@ let fillMode = false;
 //draw style
 ctx.strokeStyle = "black";
 ctx.lineWidth = lineWidth;
+//canvas background init
+ctx.fillStyle = "white";
+ctx.rect(0, 0, 500, 500);
+ctx.fill();
+
+//function Area start
 
 function stopPainting(){
     painting = false;
@@ -77,6 +85,20 @@ function onMouseClick(event){
     }
 }
 
+function doSavePaint(event){
+    event.preventDefault();
+    const canvasData = canvas.toDataURL();
+    const downTagA = document.createElement("a");
+    downTagA.href = canvasData;
+    downTagA.download = "[🖌]my_canvas";
+    downTagA.click();
+}
+
+
+//function Area end
+
+
+
 if(canvas){
     canvas.addEventListener("mousemove",onMouseMove);
     canvas.addEventListener("mousedown",onMouseDown);
@@ -84,10 +106,32 @@ if(canvas){
     canvas.addEventListener("mouseleave",stopPainting);
     canvas.addEventListener("click",onMouseClick);
     
-    colorRange.addEventListener("change",onChangeLineWidth);
-    fillbtn.addEventListener("click",onModeChange);
-    //색div마다 이벤트 mapping
-    jsPaints.forEach((element) => {
-        element.addEventListener("click",setStrokeStyle);
-    });
 }
+
+if(colorRange){
+    colorRange.addEventListener("change",onChangeLineWidth);
+    
+}
+if(fillbtn){
+    fillbtn.addEventListener("click",onModeChange);
+    
+}
+if(jsPaints){
+    jsPaints.forEach((element) => {
+    //색div마다 이벤트 mapping
+    element.addEventListener("click",setStrokeStyle);
+    });
+
+}
+
+if(jsSaveBtn){
+    jsSaveBtn.addEventListener("click",doSavePaint);
+}
+
+
+window.addEventListener("contextmenu",(e)=>e.preventDefault());
+
+
+
+
+
